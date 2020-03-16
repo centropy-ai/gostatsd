@@ -8,6 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/atlassian/gostatsd/pkg/cachedinstances"
+
 	"github.com/atlassian/gostatsd"
 	"github.com/atlassian/gostatsd/pkg/fakesocket"
 
@@ -27,13 +29,13 @@ func TestStatsdThroughput(t *testing.T) {
 	cloudHandlerFactory := newCloudHandlerFactory(
 		"",
 		logrus.StandardLogger(),
-		CacheOptions{
-			CacheRefreshPeriod:        DefaultCacheRefreshPeriod,
-			CacheEvictAfterIdlePeriod: DefaultCacheEvictAfterIdlePeriod,
-			CacheTTL:                  DefaultCacheTTL,
-			CacheNegativeTTL:          DefaultCacheNegativeTTL,
+		cachedinstances.CacheOptions{
+			CacheRefreshPeriod:        gostatsd.DefaultCacheRefreshPeriod,
+			CacheEvictAfterIdlePeriod: gostatsd.DefaultCacheEvictAfterIdlePeriod,
+			CacheTTL:                  gostatsd.DefaultCacheTTL,
+			CacheNegativeTTL:          gostatsd.DefaultCacheNegativeTTL,
 		},
-		rate.NewLimiter(DefaultMaxCloudRequests, DefaultBurstCloudRequests),
+		rate.NewLimiter(gostatsd.DefaultMaxCloudRequests, gostatsd.DefaultBurstCloudRequests),
 		"test")
 	// Inject the mock provider
 	cloudHandlerFactory.cloudProvider = &fakeProvider{
@@ -46,17 +48,17 @@ func TestStatsdThroughput(t *testing.T) {
 	s := Server{
 		Backends:            []gostatsd.Backend{backend},
 		CloudHandlerFactory: cloudHandlerFactory,
-		DefaultTags:         DefaultTags,
-		ExpiryInterval:      DefaultExpiryInterval,
-		FlushInterval:       DefaultFlushInterval,
-		MaxReaders:          DefaultMaxReaders,
-		MaxParsers:          DefaultMaxParsers,
-		MaxWorkers:          DefaultMaxWorkers,
-		MaxQueueSize:        DefaultMaxQueueSize,
+		DefaultTags:         gostatsd.DefaultTags,
+		ExpiryInterval:      gostatsd.DefaultExpiryInterval,
+		FlushInterval:       gostatsd.DefaultFlushInterval,
+		MaxReaders:          gostatsd.DefaultMaxReaders,
+		MaxParsers:          gostatsd.DefaultMaxParsers,
+		MaxWorkers:          gostatsd.DefaultMaxWorkers,
+		MaxQueueSize:        gostatsd.DefaultMaxQueueSize,
 		EstimatedTags:       1, // Travis has limited memory
-		PercentThreshold:    DefaultPercentThreshold,
-		HeartbeatEnabled:    DefaultHeartbeatEnabled,
-		ReceiveBatchSize:    DefaultReceiveBatchSize,
+		PercentThreshold:    gostatsd.DefaultPercentThreshold,
+		HeartbeatEnabled:    gostatsd.DefaultHeartbeatEnabled,
+		ReceiveBatchSize:    gostatsd.DefaultReceiveBatchSize,
 		MaxConcurrentEvents: 2,
 		ServerMode:          "standalone",
 		Viper:               viper.New(),

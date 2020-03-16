@@ -10,10 +10,11 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/atlassian/gostatsd/pkg/stats"
+
 	"github.com/spf13/viper"
 
 	"github.com/atlassian/gostatsd"
-	"github.com/atlassian/gostatsd/pkg/stats"
 	"github.com/atlassian/gostatsd/pkg/util"
 
 	"github.com/aws/aws-sdk-go/aws"
